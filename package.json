@@ -1,14 +1,9 @@
 {
-  "name": "hyperapp-parcel",
+  "name": "profile",
   "private": true,
-  "version": "0.0.1",
-  "description": "A minimal hyperapp boilerplate project with parcel as bundle",
-  "keywords": [
-    "hyperapp",
-    "parceljs",
-    "bundle"
-  ],
-  "author": "ookangzheng",
+  "version": "0.1.0",
+  "description": "Profile App",
+  "author": "Jesse Sibley",
   "license": "MIT",
   "repository": "ookangzheng/hyperapp-parcel",
   "scripts": {
@@ -16,7 +11,14 @@
     "build": "cross-env NODE_ENV=production parcel build index.html --public-url ./ -d build --no-cache"
   },
   "dependencies": {
-    "hyperapp": "^1.0.1"
+    "@hyperapp/router": "^0.7.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "hyperapp": "^1.0.1",
+    "hyperapp-fetch": "^1.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.1",

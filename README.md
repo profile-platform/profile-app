@@ -1,20 +1,15 @@
-# hyperapp-parcel
-📦 A minimal hyperapp boilerplate project with parcel as bundler. 🚀
+# Profile
 
-## Getting started
-- **1.** Clone the boilerplate repository to create a new fresh project
-  ```sh
-  git clone --depth 1 --origin boilerplate git@github.com:ookangzheng/hyperapp-parcel.git <YOUR PROJECT>
-  #
-  cd <YOUR PROJECT>
-  ```
+App for interacting with [Profiles](https://github.com/profile-platform/profile)
 
-- **2.** Install the required dependencies (using your favorite package manager)
-  ```sh
-  yarn install || npm install
-  ```
+```
+$ git clone https://github.com/profile-platform/profile-app
 
-- **3.** Start the development server
-  ```js
-  yarn start || npm start
-  ```
+$ cd profile-app
+
+$ yarn
+
+$ yarn start
+
+$ open http://localhost:1234/profile?profile=winegum.netlify.com
+```

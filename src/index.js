@@ -1,28 +1,54 @@
-import { h, app} from "hyperapp"
+import { h, app } from 'hyperapp'
+import { Link, Route, location } from '@hyperapp/router'
+import { Profile } from './components/profile'
+import './css/main.css'
+
+export function getProfileURL() {
+    const searches = window.location.search
+        .slice(1)
+        .replace('&', '=')
+        .split('=')
+
+    if (searches.indexOf('profile') != -1) {
+        const address = searches[searches.indexOf('profile') + 1]
+    
+        if (address.endsWith('/')) {
+            return 'http://' + address + 'profile.json'
+        } else {
+            return 'http://' + address + '/profile.json'
+        }
+
+        return undefined;
+    }
+}
 
 const state = {
-    title: 'It works !',
-    count: 0
+    location: location.state,
+    profile: {}
 }
 
 const actions = {
-    down: () => state => ({
-        count: state.count - 1
-    }),
-    up: () => state => ({
-        count: state.count + 1
-    })
+    location: location.actions,
+    setProfile: profile => ({ profile }),
+    fetchProfile: async (state, actions) => {
+        fetch(getProfileURL())
+            .then(data => data.json())
+            .then(data => state => actions.setProfile)
+    }
 }
 
-const view = (state, actions) => (
-    console.table(state),
-    <div class="container">
-        <h1>{state.title}</h1>
-        <hr/>
-        <h2>{state.count}</h2>
-        <button onclick={actions.down} disabled={state.count <= 0}>−</button>
-        <button onclick={actions.up}>+</button>
-    </div>
-  )
+const ProfilePage = async ({ match }) => (
+    <Profile cache={state.profile} />
+)
+
+const view = (state, actions) => {
+    return (
+        <div oncreate={() => { actions.fetchProfile() }} >
+            <Route path='/profile' render={ProfilePage} />
+        </div>
+    )
+}
 
 export const main = app(state, actions, view, document.body)
+
+const unsubscribe = location.subscribe(main.location)
