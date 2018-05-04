@@ -17,8 +17,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-0": "^6.24.1",
-    "hyperapp": "^1.0.1",
-    "hyperapp-fetch": "^1.0.1"
+    "hyperapp": "^1.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.1",
