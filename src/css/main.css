@@ -50,6 +50,11 @@ a {
     background-color: #999;
 }
 
+.profile-header-picture-img {
+    width: 100%;
+    margin: 0 auto;
+}
+
 .profile-header-name {
     font-size: 2rem;
     margin: 1em 0;
@@ -97,6 +102,7 @@ a {
     border-radius: 0.4rem;
     display: flex;
     padding: 0.5em;
+    margin-bottom: 1em;
 }
 
 .profile-post-left {
@@ -121,5 +127,15 @@ a {
 .profile-footer {
     color: #999;
     text-align: center;
-    padding: 2em;
+    padding: 1em;
+}
+
+.profile-error {
+    background-color: #ccc;
+    border-radius: 0.4rem;
+    max-width: 20em;
+    margin: 0 auto;
+    margin-top: 2em;
+    padding: 1em;
+    text-align: center;
 }

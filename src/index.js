@@ -6,44 +6,57 @@ import { h, app } from 'hyperapp'
 import { Link, Route, location } from '@hyperapp/router'
 import { Picture } from './components/picture'
 import { Posts, Post } from './components/post'
+import { verify } from './verify'
 import './css/main.css'
 
-export function getProfileURL() {
+export function getProfileURL(ext) {
     const searches = window.location.search
         .slice(1)
         .replace('&', '=')
-        .split('=')
+        .split('=');
 
-    if (searches.indexOf('profile') != -1) {
-        const address = searches[searches.indexOf('profile') + 1]
+    const address = searches[searches.indexOf('profile') + 1]
+    if (ext && searches.indexOf('profile') != -1) {
         if (address.endsWith('/')) {
-            return 'http://' + address + 'profile.json'
+            return 'http://' + address + 'profile.json';
         } else {
-            return 'http://' + address + '/profile.json'
+            return 'http://' + address + '/profile.json';
         }
-
         return undefined;
+    } else {
+        return 'http://' + address;
     }
 }
 
 const state = {
     location: location.state,
-    profile: {}
+    profile: {},
+    error: false
 }
 
 const actions = {
     location: location.actions,
-    setProfile: profile => ({ profile }),
-    fetchProfile: async (state, actions) => {
-        fetch(getProfileURL())
-            .then(data => data.json())
-            .then(data => state => actions.setProfile)
-    }
+    setProfile: profile => (
+        verify(profile) ?  { profile } : { }
+    ),
+    verifyProfile: profile => (
+        { error: verify(profile) }
+    )
 }
 
-const Header = ({ name, nickname, bio, interests }) => (
+const Error = () => (
+    <div class='profile-error'>
+        <h1>Oh no!</h1>
+        <p>
+            Looks like this profile isn't formatted correctly.
+            Check the console for details.
+        </p>
+    </div>
+)
+
+const Header = ({ name, picture, nickname, bio, interests }) => (
     <div class='profile-header'>
-        <Picture />
+        <Picture url={ `${getProfileURL()}${picture}`} />
 
         <div>
             <h2 class='profile-header-name'>{ name }</h2>
@@ -57,9 +70,7 @@ const Header = ({ name, nickname, bio, interests }) => (
 
             <div class='profile-header-interests'>
                 <ul>
-                    {interests.map((i) => (
-                        <li>{ i }</li>
-                    ))}
+                    { interests ? interests.map(interest => <li>{interest}</li>) : <li /> }
                 </ul>
             </div>
 
@@ -74,18 +85,37 @@ const Footer = state => (
 )
 
 const view = (state, actions) => {
-    let { name, nickname, bio, interests } = state.profile;
+    let {
+        name,
+        picture,
+        nickname,
+        bio,
+        interests,
+        posts
+    } = state.profile;
 
     return (
-        <div oncreate={() => { actions.fetchProfile() }} >
+        <div oncreate={() => {
+            fetch(getProfileURL(true))
+                .then(data => data.json())
+                .then(actions.setProfile)
+                .then(actions.verifyProfile)
+            }}
+            >
             <div class='container'>
                 <Header
                     name={name}
+                    picture={picture}
                     nickname={nickname}
                     bio={bio}
                     interests={interests}
                 />
-                <Posts />
+                <Posts
+                    name={name}
+                    picture={picture}
+                    nickname={nickname}
+                    posts={posts}
+                />
                 <Footer />
             </div>
 
